@@ -21,4 +21,11 @@ class LocalStorageService{
         
     }
 
+    static getUsers(){
+        return JSON.parse(localStorage.getItem('users'))||[];
+    }
+
 }
+
+
+export default LocalStorageService;
