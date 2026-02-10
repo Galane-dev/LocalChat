@@ -1,15 +1,8 @@
 # LocalChat
-Local storage chat app
-
-
-
-
-
-# LocalChat
 
 ## What is LocalChat ?
 
-LocalChat is a modern local chat app that allows users to create accounts, chat to individuals and groups, edit account,log out, log in, see who is online, and see messages as well as their timestamps; all without having to connect to external networks.
+LocalChat is a modern local storage chat app that allows users to create accounts, chat to individuals and groups, edit account,log out, log in, see who is online, and see messages as well as their timestamps; all without having to connect to external networks.
 
 ## Why Choose LocalChat?
 
