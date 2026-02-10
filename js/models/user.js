@@ -6,8 +6,8 @@ class User{
         this.id=User.generateUserId();
         this.username=username;
         this.password=password;
-        this.isLoggedIn=true;
-        this.lastSeen=Date.now();
+        this.isLoggedIn=false;
+        this.isOnline=false;
     }
 
     static isUserNameUnique(username){
