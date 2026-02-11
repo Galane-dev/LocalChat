@@ -165,6 +165,9 @@ function main(){
     let saveEdits=document.getElementById('save-edits');
     saveEdits.addEventListener('click',()=>updateProfile());
 
+    let logout=document.getElementById('logout');
+    logout.addEventListener('click',()=>SessionManager.logout());
+
     populateUsersList(LocalStorageService.getUsers());
 }
 

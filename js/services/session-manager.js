@@ -24,10 +24,23 @@ class SessionManager{
     }
     
 
-    static logout(user){
-        user.isLoggedIn=false;
-        user.isOnline=false;
+    static logout(){
+        let users=LocalStorageService.getUsers();
+        let user=SessionManager.getUser();
+        
+        if(user){
+            for(let i=0;i<users.length;i++){
+                if(users[i].id===user.id){
+                    users[i].isLoggedIn=false;
+                    users[i].isOnline=false;
+                    break;
+                }
+            }
+
+            localStorage.setItem('users',JSON.stringify(users));
+        }        
         sessionStorage.removeItem('user');
+        window.location.replace('../index.html');
     }
 
     static getUser(){
