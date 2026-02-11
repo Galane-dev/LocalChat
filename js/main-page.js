@@ -31,6 +31,18 @@ function populateUsersList(users){
         let userProfilePicture=document.createElement('img');
         let username=document.createElement('h3');
         let lastMessage=document.createElement('p');
+        let onlineBadge=document.createElement('p');
+
+
+        onlineBadge.textContent='⦿';
+        onlineBadge.style.color='red';
+
+        if(users[i].isOnline===true){
+            onlineBadge.style.display='inline';
+        }
+        else{
+            onlineBadge.style.display='none';
+        }
 
         userProfilePicture.src=users[i].profilePicture||'../assets/images/profile-icon.png';
         username.textContent=users[i].username;
@@ -43,6 +55,7 @@ function populateUsersList(users){
         userTile.append(userProfilePicture);
         userTile.append(username);
         userTile.append(lastMessage);
+        userTile.append(onlineBadge);
 
         //Append the tile/list item to the list;
         userList.append(userTile);
@@ -57,11 +70,25 @@ function openChat(userId1,userId2){
     let allChats=LocalStorageService.getChats();
     let chatId=Chat.generateChatId(userId1,userId2);
     let currentChat=allChats?.find(chat=>chat.id===chatId);
+    let chatee=LocalStorageService.getUser(userId2);
     let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
     let messagesCount=currentChat?.messages?.length;
     let sendIcon=document.getElementById('message-send');
     let noMessages=document.getElementById('no-messages');
+    let chateeName=document.getElementById('chatee-name');
+    let chateeStatus=document.getElementById('chatee-status');
+
+    chateeName.textContent=chatee.username;
+    
+
+    //Display online/offline status
+    if(chatee.isOnline){
+        chateeStatus.textContent='Online';
+    }
+    else{
+        chateeStatus.textContent='Offline';
+    }
 
     sendIcon.addEventListener('click',()=>sendMessage(chatId));
 
@@ -109,6 +136,7 @@ function displayUserProfile(userId){
 }
 
 
+
 function searchUsers(){
     let users=LocalStorageService.getUsers();
     let textToSearch=document.getElementById('search-text').value;
@@ -119,11 +147,26 @@ function searchUsers(){
     populateUsersList(usersToReturn);
 }
 
+function applyFilters(){
+    //This is a nice to have, implement if there's time
+}
+
+function updateProfile(){
+    let username=document.getElementById('username-input').value;
+    let password=document.getElementById('password-input').value;
+    LocalStorageService.updateProfile(username,password);
+}
 
 
 function main(){
     let searchIcon=document.getElementById('search-icon');
     searchIcon.addEventListener('click',()=>searchUsers());
+
+    let saveEdits=document.getElementById('save-edits');
+    saveEdits.addEventListener('click',()=>updateProfile());
+
+    let logout=document.getElementById('logout');
+    logout.addEventListener('click',()=>SessionManager.logout());
 
     populateUsersList(LocalStorageService.getUsers());
 }

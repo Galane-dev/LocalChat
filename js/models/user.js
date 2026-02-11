@@ -8,6 +8,7 @@ class User{
         this.password=password;
         this.isLoggedIn=false;
         this.isOnline=false;
+        this.lastSeen=Date.now();
     }
 
     static isUserNameUnique(username){
