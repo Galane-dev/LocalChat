@@ -4,12 +4,26 @@ import Chat from "./models/chat.js";
 
 console.log('Logged in user is '+JSON.parse(sessionStorage.getItem('user')).username);
 
-function populateUsersList(show='all'){
-    let users=LocalStorageService.getUsers();
+function populateUsersList(users){
+    //First of most, clear list
+    let userList=document.getElementById('users-list');
+    let noUsersText=document.getElementById('no-users');
+    userList.innerHTML='';
+
+
+    if(users.length===0){
+        userList.style.display='none';
+        noUsersText.style.display='block';
+    }
+    else{
+        userList.style.display='block';
+        noUsersText.style.display='none';
+    }
+
+
     let currentUserId=SessionManager.getUser().id;
 
     console.log('Users are '+users);
-    let userList=document.getElementById('users-list');
 
 
     for(let i=0;i<users.length;i++){
@@ -90,14 +104,28 @@ function displayUserProfile(userId){
     }
     else{
         //Show the chatee profile
-        
+
     }
+}
+
+
+function searchUsers(){
+    let users=LocalStorageService.getUsers();
+    let textToSearch=document.getElementById('search-text').value;
+    textToSearch=textToSearch.toLowerCase();
+    let usersToReturn=users.filter(user=>user.username.toLowerCase().includes(textToSearch));
+    console.error(usersToReturn);
+
+    populateUsersList(usersToReturn);
 }
 
 
 
 function main(){
-    populateUsersList();
+    let searchIcon=document.getElementById('search-icon');
+    searchIcon.addEventListener('click',()=>searchUsers());
+
+    populateUsersList(LocalStorageService.getUsers());
 }
 
 main();
