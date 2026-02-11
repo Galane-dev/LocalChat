@@ -1,14 +1,20 @@
 import LocalStorageService from "./local-storage.js";
+import User from "../models/user.js";
 
 class SessionManager{
 
-    static Login(username,password){
+    static login(username,password){
         let users=LocalStorageService.getUsers();
-        user=users.find(user=>(user.username===username && user.password===password));
+        let user=users.find(user=>(user.username===username && user.password===password));
         if(user){
-            user.isLoggedIn=true;
-            user.isOnline=true;
+            for(let i=0;i<users.length;i++){
+                if(users[i]===user){
+                    users[i].isLoggedIn=true;
+                    users[i].isOnline=true;
+                }
+            }
 
+            localStorage.setItem('users',JSON.stringify(users));
             sessionStorage.setItem('user',JSON.stringify(user));
             return user;
         }
@@ -17,7 +23,7 @@ class SessionManager{
     }
     
 
-    static Logout(user){
+    static logout(user){
         user.isLoggedIn=false;
         user.isOnline=false;
         sessionStorage.removeItem('user');
