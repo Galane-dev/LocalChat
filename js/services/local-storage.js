@@ -1,6 +1,7 @@
 import Message from "../models/message.js";
 import User from "../models/user.js";
 import Chat from "../models/chat.js";
+import SessionManager from "./session-manager.js";
 class LocalStorageService{
     constructor(){
 
@@ -53,6 +54,30 @@ class LocalStorageService{
 
     static getChats(){
         return JSON.parse(localStorage.getItem('chats'))||[];
+    }
+
+    static getUser(userId){
+        let users=LocalStorageService.getUsers();
+        return users.find(user=>user.id===userId);
+    }
+
+
+    static updateProfile(username,password){
+        let users=LocalStorageService.getUsers();
+        let user=SessionManager.getUser();
+        
+        if(user){
+            for(let i=0;i<users.length;i++){
+                if(users[i].id===user.id){
+                    users[i].username=username;
+                    users[i].password=password;
+                    break;
+                }
+            }
+
+            localStorage.setItem('users',JSON.stringify(users));
+
+        }
     }
 
 }

@@ -70,11 +70,25 @@ function openChat(userId1,userId2){
     let allChats=LocalStorageService.getChats();
     let chatId=Chat.generateChatId(userId1,userId2);
     let currentChat=allChats?.find(chat=>chat.id===chatId);
+    let chatee=LocalStorageService.getUser(userId2);
     let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
     let messagesCount=currentChat?.messages?.length;
     let sendIcon=document.getElementById('message-send');
     let noMessages=document.getElementById('no-messages');
+    let chateeName=document.getElementById('chatee-name');
+    let chateeStatus=document.getElementById('chatee-status');
+
+    chateeName.textContent=chatee.username;
+    
+
+    //Display online/offline status
+    if(chatee.isOnline){
+        chateeStatus.textContent='Online';
+    }
+    else{
+        chateeStatus.textContent='Offline';
+    }
 
     sendIcon.addEventListener('click',()=>sendMessage(chatId));
 
@@ -122,6 +136,7 @@ function displayUserProfile(userId){
 }
 
 
+
 function searchUsers(){
     let users=LocalStorageService.getUsers();
     let textToSearch=document.getElementById('search-text').value;
@@ -136,13 +151,19 @@ function applyFilters(){
     //This is a nice to have, implement if there's time
 }
 
-
-
+function updateProfile(){
+    let username=document.getElementById('username-input').value;
+    let password=document.getElementById('password-input').value;
+    LocalStorageService.updateProfile(username,password);
+}
 
 
 function main(){
     let searchIcon=document.getElementById('search-icon');
     searchIcon.addEventListener('click',()=>searchUsers());
+
+    let saveEdits=document.getElementById('save-edits');
+    saveEdits.addEventListener('click',()=>updateProfile());
 
     populateUsersList(LocalStorageService.getUsers());
 }
