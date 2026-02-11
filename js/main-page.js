@@ -5,7 +5,6 @@ import Chat from "./models/chat.js";
 console.log('Logged in user is '+JSON.parse(sessionStorage.getItem('user')).username);
 
 function populateUsersList(users){
-    //First of most, clear list
     let userList=document.getElementById('users-list');
     let noUsersText=document.getElementById('no-users');
     userList.innerHTML='';
@@ -78,16 +77,21 @@ function openChat(userId1,userId2){
     let noMessages=document.getElementById('no-messages');
     let chateeName=document.getElementById('chatee-name');
     let chateeStatus=document.getElementById('chatee-status');
+    let chateeSideName=document.getElementById('chatee-side-name');
+    let chateeSideStatus=document.getElementById('chatee-side-status');
 
     chateeName.textContent=chatee.username;
+    chateeSideName.textContent=chatee.username;
     
 
     //Display online/offline status
     if(chatee.isOnline){
         chateeStatus.textContent='Online';
+        chateeSideStatus.textContent='Online';
     }
     else{
         chateeStatus.textContent='Offline';
+        chateeSideStatus.textContent='Offline';
     }
 
     sendIcon.addEventListener('click',()=>sendMessage(chatId));
