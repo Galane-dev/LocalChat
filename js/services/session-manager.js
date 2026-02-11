@@ -29,6 +29,10 @@ class SessionManager{
         sessionStorage.removeItem('user');
     }
 
+    static getUser(){
+        return JSON.parse(sessionStorage.getItem('user'));
+    }
+
 
     static setTestValue(){
         sessionStorage.setItem('test','test value');
