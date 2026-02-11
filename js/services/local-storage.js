@@ -23,8 +23,11 @@ class LocalStorageService{
     }
 
     static getUsers(){
-        console.log(JSON.parse(localStorage.getItem('users')))
         return JSON.parse(localStorage.getItem('users'))||[];
+    }
+
+    static getChats(){
+        return JSON.parse(localStorage.getItem('chats'))||[];
     }
 
 }
