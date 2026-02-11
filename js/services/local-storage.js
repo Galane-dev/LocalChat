@@ -1,4 +1,6 @@
+import Message from "../models/message.js";
 import User from "../models/user.js";
+import Chat from "../models/chat.js";
 class LocalStorageService{
     constructor(){
 
@@ -16,6 +18,30 @@ class LocalStorageService{
         let chat=new Chat(userId1,userId2);
         chats.push(chat);
         localStorage.setItem('chats',JSON.stringify(chats));        
+    }
+
+    static sendMessage(chatId,content,replyTo){
+        let message=new Message(content,replyTo);
+        let chats=LocalStorageService.getChats();
+        let currentChat=chats.find(chat=>chat.id===chatId);
+        if(!currentChat){
+            console.log('Creating chat');
+            currentChat=new Chat(chatId);
+            chats.push(currentChat);
+        }
+
+        console.log('Chat created :'+currentChat.id);
+        currentChat.messages.push(message);
+
+        for(let i=0;i<chats.length;i++){
+            if(chats[i].id===currentChat.id){
+                chats[i]=currentChat;
+                break;
+            }
+        }
+
+        localStorage.setItem('chats',JSON.stringify(chats));
+
     }
 
     static createGroup(){

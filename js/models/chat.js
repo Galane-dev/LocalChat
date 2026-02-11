@@ -1,6 +1,6 @@
 class Chat{
-    constructor(userId1,userId2){
-        this.id=Chat.generateChatId();
+    constructor(chatId){
+        this.id=chatId;
         this.user1Typing=false;
         this.user2Typing=false;
         this.messages=[];
