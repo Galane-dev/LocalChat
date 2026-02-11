@@ -81,9 +81,17 @@ function openChat(userId1,userId2){
 
 function sendMessage(chatId,replyTo='none'){
     let messageInput=document.getElementById('message-text').value;
-
     LocalStorageService.sendMessage(chatId,messageInput,replyTo);
+}
 
+function displayUserProfile(userId){
+    if(userId===SessionManager.getUser().id){
+        //The current user's profile
+    }
+    else{
+        //Show the chatee profile
+        
+    }
 }
 
 
