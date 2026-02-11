@@ -1,3 +1,4 @@
+import User from "../models/user.js";
 class LocalStorageService{
     constructor(){
 
@@ -22,6 +23,7 @@ class LocalStorageService{
     }
 
     static getUsers(){
+        console.log(JSON.parse(localStorage.getItem('users')))
         return JSON.parse(localStorage.getItem('users'))||[];
     }
 

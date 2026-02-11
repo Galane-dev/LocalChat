@@ -1,9 +1,12 @@
-let isSignIn=true;
-const defaultHeading=document.getElementById('welcome-heading');
-const defaultQuestion=document.getElementById('toggle-question');
-const defaultView=document.getElementById('toggle-action');
-const defaultMessage=document.getElementById('welcome-message');
+import LocalStorageService from "./services/local-storage.js";
+import SessionManager from "./services/session-manager.js";
+import User from "./models/user.js";
 
+
+console.log(LocalStorageService.getUsers());
+let isSignUp=true;
+const defaultView=document.getElementById('toggle-action');
+let authButton=document.getElementById('submit-button');
 
 
 function toggleView(){
@@ -15,10 +18,10 @@ function toggleView(){
 
 
 
-    if(isSignIn){
+    if(isSignUp){
         heading.textContent='Hey newbie...';
         toggleQuestion.textContent='Already have an account?';
-        toggleMessage.textContent='LocalChat is a local chat appYour data is stored securely in your own computer, no one but you will be able to access the data.';
+        toggleMessage.textContent='LocalChat is a local chat app.\nYour data is stored securely in your own computer, no one but you will be able to access the data.';
         toggleView.textContent="Sign In";
         submitButton.textContent='Sign Up';
 
@@ -26,16 +29,43 @@ function toggleView(){
     else{
         heading.textContent='Welcome Back...';
         toggleQuestion.textContent='Don’t have an account?';
-        toggleMessage.textContent='LocalChat is a local chat appYour data is stored securely in your own computer, no one but you will be able to access the data';
+        toggleMessage.textContent='LocalChat is a local chat app.\nYour data is stored securely in your own computer, no one but you will be able to access the data.';
         toggleView.textContent='Sign Up';
         submitButton.textContent='Sign In';
 
     }
 
-    isSignIn=!isSignIn;
+    isSignUp=!isSignUp;
     console.log('done');
 }
 
+
+function authenticate(){
+    let username=document.getElementById('username-input').value;
+    let password=document.getElementById('password-input').value;
+    if(!isSignUp){
+        if(User.isUserNameUnique(username)){
+            //Create an account
+            LocalStorageService.createUser(username,password);
+            console.log(LocalStorageService.getUsers());
+        }
+        else{
+            alert('Please enter a new username, make it unique');
+            return;
+        }
+    }
+    //Login
+    let user=SessionManager.login(username,password);
+    console.log(user);
+    if(user){
+        console.log('logged in as '+ user.username);
+        //Navigate to the main page
+    }
+    else{
+        alert('Login failed, ensure you have entered correct credentials');
+        return;
+    }
+}
 
 
 
@@ -49,6 +79,7 @@ function toggleView(){
 function main(){
     console.log('Main method test');
     defaultView.addEventListener('click',()=>toggleView());
+    authButton.addEventListener('click', ()=>authenticate());
 }
 
 main();
