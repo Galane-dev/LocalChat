@@ -31,6 +31,18 @@ function populateUsersList(users){
         let userProfilePicture=document.createElement('img');
         let username=document.createElement('h3');
         let lastMessage=document.createElement('p');
+        let onlineBadge=document.createElement('p');
+
+
+        onlineBadge.textContent='⦿';
+        onlineBadge.style.color='red';
+
+        if(users[i].isOnline===true){
+            onlineBadge.style.display='inline';
+        }
+        else{
+            onlineBadge.style.display='none';
+        }
 
         userProfilePicture.src=users[i].profilePicture||'../assets/images/profile-icon.png';
         username.textContent=users[i].username;
@@ -43,6 +55,7 @@ function populateUsersList(users){
         userTile.append(userProfilePicture);
         userTile.append(username);
         userTile.append(lastMessage);
+        userTile.append(onlineBadge);
 
         //Append the tile/list item to the list;
         userList.append(userTile);
@@ -118,6 +131,12 @@ function searchUsers(){
 
     populateUsersList(usersToReturn);
 }
+
+function applyFilters(){
+    //This is a nice to have, implement if there's time
+}
+
+
 
 
 
