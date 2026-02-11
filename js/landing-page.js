@@ -60,6 +60,7 @@ function authenticate(){
     if(user){
         console.log('logged in as '+ user.username);
         //Navigate to the main page
+        window.location.replace('./pages/main.html');
     }
     else{
         alert('Login failed, ensure you have entered correct credentials');
