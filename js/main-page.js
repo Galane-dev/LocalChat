@@ -4,12 +4,26 @@ import Chat from "./models/chat.js";
 
 console.log('Logged in user is '+JSON.parse(sessionStorage.getItem('user')).username);
 
-function populateUsersList(show='all'){
-    let users=LocalStorageService.getUsers();
+function populateUsersList(users){
+    //First of most, clear list
+    let userList=document.getElementById('users-list');
+    let noUsersText=document.getElementById('no-users');
+    userList.innerHTML='';
+
+
+    if(users.length===0){
+        userList.style.display='none';
+        noUsersText.style.display='block';
+    }
+    else{
+        userList.style.display='block';
+        noUsersText.style.display='none';
+    }
+
+
     let currentUserId=SessionManager.getUser().id;
 
     console.log('Users are '+users);
-    let userList=document.getElementById('users-list');
 
 
     for(let i=0;i<users.length;i++){
@@ -43,43 +57,75 @@ function openChat(userId1,userId2){
     let allChats=LocalStorageService.getChats();
     let chatId=Chat.generateChatId(userId1,userId2);
     let currentChat=allChats?.find(chat=>chat.id===chatId);
-    let chatsList=document.createElement('ul');
+    let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
     let messagesCount=currentChat?.messages?.length;
     let sendIcon=document.getElementById('message-send');
+    let noMessages=document.getElementById('no-messages');
 
     sendIcon.addEventListener('click',()=>sendMessage(chatId));
+
+    if(messagesCount>0){
+        noMessages.style.display='none';
+        chatsList.style.display='inline';
+    }
+    else{
+        chatsList.style.display='none';
+        noMessages.style.display='inline';
+    }
 
     for(let i=0;i<messagesCount;i++){
         let chatTile=document.createElement('li');
         let chatMessage=document.createElement('p');
         let chatDate=document.createElement('p');
         
-        chatMessage.textContent=currentChat.messages[i].content;
+        chatMessage.innerText=currentChat.messages[i].content;
         chatDate.textContent=currentChat.messages[i].timestamp;
 
-        chatTile.append(chatMessage);
-        chatTile.append(chatDate);
 
-        chatsList.append(chatTile);
+        chatTile.append(chatMessage.textContent);
+        chatTile.append(chatDate.textContent);
+
+        chatsList.appendChild(chatTile);
     }
 
-    currentChat?.messages?.length>0?messagesBox.innerHTML=chatsList
-                                : messagesBox.innerHTML='<p>No messages yet</p>';
+    
 
 }
 
 function sendMessage(chatId,replyTo='none'){
     let messageInput=document.getElementById('message-text').value;
-
     LocalStorageService.sendMessage(chatId,messageInput,replyTo);
+}
 
+function displayUserProfile(userId){
+    if(userId===SessionManager.getUser().id){
+        //The current user's profile
+    }
+    else{
+        //Show the chatee profile
+
+    }
+}
+
+
+function searchUsers(){
+    let users=LocalStorageService.getUsers();
+    let textToSearch=document.getElementById('search-text').value;
+    textToSearch=textToSearch.toLowerCase();
+    let usersToReturn=users.filter(user=>user.username.toLowerCase().includes(textToSearch));
+    console.error(usersToReturn);
+
+    populateUsersList(usersToReturn);
 }
 
 
 
 function main(){
-    populateUsersList();
+    let searchIcon=document.getElementById('search-icon');
+    searchIcon.addEventListener('click',()=>searchUsers());
+
+    populateUsersList(LocalStorageService.getUsers());
 }
 
 main();

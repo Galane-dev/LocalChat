@@ -30,7 +30,6 @@ class LocalStorageService{
             chats.push(currentChat);
         }
 
-        console.log('Chat created :'+currentChat.id);
         currentChat.messages.push(message);
 
         for(let i=0;i<chats.length;i++){

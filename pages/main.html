@@ -34,6 +34,8 @@
                 <ul id="users-list">
 
                 </ul>
+
+                <p id="no-users">No users found</p>
             </div>
 
         </nav>
@@ -41,24 +43,46 @@
         <main>
             <div>
                 <img id="chatee-profile-picture" src="" alt="chatee profile picture"/>
-                <p id="chatee-profile-picture"></p>
+                <p id="chatee-name"></p>
                 <p id="chatee-status"></p>
             </div>
 
             <div id="messages-box">
-                
+                <ul id="chats-list"></ul>
+                <p id="no-messages">No messages yet...</p>
             </div>
 
             <div id="message-container">
                 <input id="message-text" type="text" placeholder="Type here..."/>
                 <img id="message-send" type="text" alt="send-icon"/>
+                
             </div>
             
         </main>
 
         <aside>
-            <h2>Profile</h2>
-            <div id="profile-details"></div>
+            <div>
+                <h2>Profile</h2>
+            </div>
+
+            <div id="current-user">
+                <img id="user-profile-picture"/>
+                <label for="username-input">Username</label>
+                <input id="username-input" type="text"/>
+                <label for="password-input">Password</label>
+                <input for="password-input" type="password"/>
+
+                <button id="cancel-edits">Cancel Edits</button>
+                <button id="save-edits">Save Edits</button>
+
+            </div>
+
+            <div id="chatee">
+                <img id="chatee-side-profile-picture"/>
+                <h3 id="chatee-side-name"></h3>
+                <p id="chatee-last-seen"></p>
+            </div>
+            
 
         </aside>
 
