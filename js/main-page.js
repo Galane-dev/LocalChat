@@ -43,29 +43,39 @@ function openChat(userId1,userId2){
     let allChats=LocalStorageService.getChats();
     let chatId=Chat.generateChatId(userId1,userId2);
     let currentChat=allChats?.find(chat=>chat.id===chatId);
-    let chatsList=document.createElement('ul');
+    let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
     let messagesCount=currentChat?.messages?.length;
     let sendIcon=document.getElementById('message-send');
+    let noMessages=document.getElementById('no-messages');
 
     sendIcon.addEventListener('click',()=>sendMessage(chatId));
+
+    if(messagesCount>0){
+        noMessages.style.display='none';
+        chatsList.style.display='inline';
+    }
+    else{
+        chatsList.style.display='none';
+        noMessages.style.display='inline';
+    }
 
     for(let i=0;i<messagesCount;i++){
         let chatTile=document.createElement('li');
         let chatMessage=document.createElement('p');
         let chatDate=document.createElement('p');
         
-        chatMessage.textContent=currentChat.messages[i].content;
+        chatMessage.innerText=currentChat.messages[i].content;
         chatDate.textContent=currentChat.messages[i].timestamp;
 
-        chatTile.append(chatMessage);
-        chatTile.append(chatDate);
 
-        chatsList.append(chatTile);
+        chatTile.append(chatMessage.textContent);
+        chatTile.append(chatDate.textContent);
+
+        chatsList.appendChild(chatTile);
     }
 
-    currentChat?.messages?.length>0?messagesBox.innerHTML=chatsList
-                                : messagesBox.innerHTML='<p>No messages yet</p>';
+    
 
 }
 
