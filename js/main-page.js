@@ -46,6 +46,9 @@ function openChat(userId1,userId2){
     let chatsList=document.createElement('ul');
     let messagesBox=document.getElementById('messages-box');
     let messagesCount=currentChat?.messages?.length;
+    let sendIcon=document.getElementById('message-send');
+
+    sendIcon.addEventListener('click',()=>sendMessage(chatId));
 
     for(let i=0;i<messagesCount;i++){
         let chatTile=document.createElement('li');
@@ -63,6 +66,13 @@ function openChat(userId1,userId2){
 
     currentChat?.messages?.length>0?messagesBox.innerHTML=chatsList
                                 : messagesBox.innerHTML='<p>No messages yet</p>';
+
+}
+
+function sendMessage(chatId,replyTo='none'){
+    let messageInput=document.getElementById('message-text').value;
+
+    LocalStorageService.sendMessage(chatId,messageInput,replyTo);
 
 }
 

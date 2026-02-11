@@ -11,6 +11,7 @@ class SessionManager{
                 if(users[i]===user){
                     users[i].isLoggedIn=true;
                     users[i].isOnline=true;
+                    break;
                 }
             }
 
