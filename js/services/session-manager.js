@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 class SessionManager{
 
-    static login(username,password){
+    static login=(username,password)=>{
         let users=LocalStorageService.getUsers();
         let user=users.find(user=>(user.username===username && user.password===password));
         if(user){
@@ -24,7 +24,7 @@ class SessionManager{
     }
     
 
-    static logout(){
+    static logout=()=>{
         let users=LocalStorageService.getUsers();
         let user=SessionManager.getUser();
         
@@ -43,18 +43,10 @@ class SessionManager{
         window.location.replace('../index.html');
     }
 
-    static getUser(){
+    static getUser=()=>{
         return JSON.parse(sessionStorage.getItem('user'));
     }
 
-
-    static setTestValue(){
-        sessionStorage.setItem('test','test value');
-    }
-
-    static getTestValue(){
-        console.log(sessionStorage.getItem('test'));
-    }
 }
 
 

@@ -8,14 +8,14 @@ class LocalStorageService{
 
     }
 
-    static createUser(username,password){
+    static createUser=(username,password)=>{
         let users=JSON.parse(localStorage.getItem('users'))||[];
         const user=new User(username,password);
         users.push(user);
         localStorage.setItem('users',JSON.stringify(users));
     }
 
-    static createChat(userId1,userId2){
+    static createChat=(userId1,userId2)=>{
         let chats=JSON.parse(localStorage.getItem('chats'));
         let chatId=Chat.generateChatId(userId1,userId2)
         let chat=new Chat(chatId);
@@ -23,12 +23,11 @@ class LocalStorageService{
         localStorage.setItem('chats',JSON.stringify(chats));        
     }
 
-    static sendMessage(chatId,content,replyTo){
+    static sendMessage=(chatId,content,replyTo)=>{
         let message=new Message(content,replyTo);
         let chats=LocalStorageService.getChats();
         let currentChat=chats.find(chat=>chat.id===chatId);
         if(!currentChat){
-            console.log('Creating chat');
             currentChat=new Chat(chatId);
             chats.push(currentChat);
         }
@@ -45,7 +44,7 @@ class LocalStorageService{
         localStorage.setItem('chats',JSON.stringify(chats));
     }
 
-    static messageGroup(groupId,content,replyTo){
+    static messageGroup=(groupId,content,replyTo)=>{
         let message=new Message(content,replyTo);
         let groups=LocalStorageService.getGroups();
         for(let i=0;i<groups.length;i++){
@@ -58,32 +57,32 @@ class LocalStorageService{
         localStorage.setItem('groups',JSON.stringify(groups));
     }
 
-    static createGroup(name,particpants){
+    static createGroup=(name,particpants)=>{
         let groups=JSON.parse(localStorage.getItem('groups'))||[];
         let group=new Group(name,particpants);
         groups.push(group);
         localStorage.setItem('groups',JSON.stringify(groups));
     }
 
-    static getUsers(){
+    static getUsers=()=>{
         return JSON.parse(localStorage.getItem('users'))||[];
     }
 
-    static getGroups(){
+    static getGroups=()=>{
         return JSON.parse(localStorage.getItem('groups'))||[];
     }
 
-    static getChats(){
+    static getChats=()=>{
         return JSON.parse(localStorage.getItem('chats'))||[];
     }
 
-    static getUser(userId){
+    static getUser=(userId)=>{
         let users=LocalStorageService.getUsers();
         return users.find(user=>user.id===userId);
     }
 
 
-    static updateProfile(username,password){
+    static updateProfile=(username,password)=>{
         let users=LocalStorageService.getUsers();
         let user=SessionManager.getUser();
         
@@ -95,12 +94,9 @@ class LocalStorageService{
                     break;
                 }
             }
-
             localStorage.setItem('users',JSON.stringify(users));
-
         }
     }
-
 }
 
 
