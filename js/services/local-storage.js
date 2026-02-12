@@ -17,7 +17,8 @@ class LocalStorageService{
 
     static createChat(userId1,userId2){
         let chats=JSON.parse(localStorage.getItem('chats'));
-        let chat=new Chat(userId1,userId2);
+        let chatId=Chat.generateChatId(userId1,userId2)
+        let chat=new Chat(chatId);
         chats.push(chat);
         localStorage.setItem('chats',JSON.stringify(chats));        
     }

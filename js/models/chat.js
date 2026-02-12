@@ -11,7 +11,7 @@ class Chat{
             return userId1+'-'+userId2;
         }
         else{
-            return userId1+'-'+userId2;
+            return userId2+'-'+userId1;
         }
     }
 }
