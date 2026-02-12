@@ -11,12 +11,12 @@ class User{
         this.lastSeen=Date.now();
     }
 
-    static isUserNameUnique(username){
+    static isUserNameUnique=(username)=>{
         let users=LocalStorageService.getUsers();
         return !(users.find(user=>user.username===username));
     }
 
-    static generateUserId(){
+    static generateUserId=()=>{
         return LocalStorageService.getUsers().length+1;
     }
 }

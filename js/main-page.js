@@ -131,7 +131,12 @@ const loadInitialData = () => {
     users=users.filter(user=>user.id !== currentUser.id);
     const myGroups=groups.filter(group=>group.participants.includes(currentUser.username));
     
-    populateUsersList([...users, ...myGroups]);
+    let onlineUsers=users.filter(user=>user.isOnline===true);
+    let offlineUsers=users.filter(user=>user.isOnline===false);
+
+    users=[...onlineUsers,...myGroups,...offlineUsers];
+
+    populateUsersList(users);
 };
 
 const handleStorageChange = (event) => {

@@ -1,4 +1,4 @@
-function switchMobileView(view){
+const switchMobileView=(view)=>{
     const nav = document.querySelector('nav');
     const main = document.querySelector('main');
     const aside = document.querySelector('aside');

@@ -6,7 +6,7 @@ class Chat{
         this.messages=[];
     }
 
-    static generateChatId(userId1,userId2){
+    static generateChatId=(userId1,userId2)=>{
         if(userId1>userId2){
             return userId1+'-'+userId2;
         }
