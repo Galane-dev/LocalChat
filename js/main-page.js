@@ -1,6 +1,8 @@
 import LocalStorageService from "./services/local-storage.js";
 import SessionManager from "./services/session-manager.js";
 import Chat from "./models/chat.js";
+import switchMobileView from "./helpers/switch-views.js";
+import getLastText from "./helpers/get-last-text.js";
 
 
 let currentChatId=null;
@@ -13,6 +15,7 @@ let currentChatType='private';
 function populateUsersList(users){
     let userList=document.getElementById('users-list');
     let noUsersText=document.getElementById('no-users');
+
     userList.innerHTML='';
 
 
@@ -53,7 +56,7 @@ function populateUsersList(users){
         userProfilePicture.src=users[i].profilePicture||'../assets/images/icons/image.png';
         username.textContent=isGroup?users[i].name
                             :users[i].username;
-        lastMessage.textContent='Last message placeholder';
+        lastMessage.textContent=getLastText(isGroup,users[i].id);
 
         //Attach open chat method to the user tile
         userTile.addEventListener('click',()=>{
@@ -82,6 +85,7 @@ function populateUsersList(users){
 
 
 function openChat(userId1,userId2,type='private'){
+    switchMobileView('chat');
 
     let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
@@ -91,9 +95,12 @@ function openChat(userId1,userId2,type='private'){
     let chateeStatus=document.getElementById('chatee-status');
     let chateeSideName=document.getElementById('chatee-side-name');
     let chateeSideStatus=document.getElementById('chatee-side-status');
+    let currentUserId=SessionManager.getUser().id;
+    
     let chatId;
     let currentChat;
     let messagesCount=0;
+
 
     chatsList.innerHTML='';
 
@@ -168,12 +175,22 @@ function openChat(userId1,userId2,type='private'){
         let chatMessage=document.createElement('p');
         let chatDate=document.createElement('p');
 
+        
+
         chatTile.id='message-tile';
         chatMessage.id='message-tile-text';
         chatDate.id='message-date';
 
         chatMessage.innerText=currentChat.messages[i].content;
         chatDate.textContent= new Date( currentChat.messages[i].timestamp).toDateString();
+
+
+        if(currentChat.messages[i].senderId===currentUserId){
+            chatTile.style.backgroundColor= 'rgb(244, 107, 107)';
+        }
+        else{
+            chatTile.style.backgroundColor= 'rgb(169, 169, 169)';
+        }
 
         chatTile.append(chatMessage);
         chatTile.append(chatDate);
@@ -202,9 +219,7 @@ function searchUsers(){
     populateUsersList(usersToReturn);
 }
 
-function applyFilters(){
-    //This is a nice to have, implement if there's time
-}
+
 
 
 function updateProfile(){
@@ -218,27 +233,39 @@ function createGroup(){
     let groupPrompt=prompt('Enter group name and member Ids(e.g "Group Name":id1,id2,id3...)');
     groupPrompt=groupPrompt.split(':');
     let participants=groupPrompt[1].split(',');
+    participants.push(SessionManager.getUser().username);
     let groupName=groupPrompt[0];
 
    LocalStorageService.createGroup(groupName,participants);
+   main();
     
 }
 
 function showUserProfile(){
-    let userProfile=document.getElementById('current-user');
-    let chateeProfile=document.getElementById('chatee');
+    const currentUser = document.getElementById('current-user');
+    const chatee = document.getElementById('chatee');
 
-    userProfile.style.display='inline';
-    chateeProfile.style.display='none';
+    currentUser.style.display = 'block';
+    chatee.style.display = 'none';
+
+    switchMobileView('profile');
 }
 
 function showChateeProfile(){
-    let userProfile=document.getElementById('current-user');
-    let chateeProfile=document.getElementById('chatee');
+    const currentUser = document.getElementById('current-user');
+    const chatee = document.getElementById('chatee');
 
-    userProfile.style.display='none';
-    chateeProfile.style.display='inline';
+    currentUser.style.display = 'none';
+    chatee.style.display = 'block';
+
+    switchMobileView('profile');
 }
+
+
+function cancelEdits(){
+    switchMobileView('nav');
+}
+
 
 
 function main(){
@@ -260,6 +287,15 @@ function main(){
     let chateeProfile=document.getElementById('chatee-info');
     chateeProfile.addEventListener('click',()=>showChateeProfile());
 
+    let cancelButton = document.getElementById('cancel-edits');
+    cancelButton.addEventListener('click', cancelEdits);
+
+    let profileBack = document.getElementById('profile-back');
+    profileBack.addEventListener('click', () => {
+        switchMobileView('nav');
+    });
+
+
     let users=LocalStorageService.getUsers();
     let groups=LocalStorageService.getGroups();
     let currentUser=SessionManager.getUser();
@@ -267,14 +303,25 @@ function main(){
     groups=groups.filter(group=>group.participants.includes(currentUser.username));
 
 
-    window.addEventListener('storage',function(event){
-        if(event.key==='chats' || event.key==='groups'){
-            if(currentChatId!==null){
-                openChat(currentChatUser1,currentChatUser2,currentChatType);
-            }
+    window.addEventListener('storage', function(event){
+    if(event.key === 'chats' || 
+       event.key === 'groups' || 
+       event.key === 'users'){
+
+        let users = LocalStorageService.getUsers();
+        let groups = LocalStorageService.getGroups();
+        let currentUser = SessionManager.getUser();
+        users=users.filter(user=>user.id!==currentUser.id);
+        groups=groups.filter(group=>group.participants.includes(currentUser.username));
+
+        if(currentChatId !== null){
+            openChat(currentChatUser1,currentChatUser2,currentChatType);
         }
+
         populateUsersList([...users,...groups]);
-    });
+    }
+});
+
 
 
     populateUsersList([...users,...groups]);
