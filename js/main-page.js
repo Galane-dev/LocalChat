@@ -137,6 +137,7 @@ function openChat(userId1,userId2,type='private'){
     
     sendIcon.onclick=()=>{
         let content=document.getElementById('message-text').value.trim();
+        console.log(content);
         if(content===''){
             return;
         } 
@@ -167,8 +168,12 @@ function openChat(userId1,userId2,type='private'){
         let chatMessage=document.createElement('p');
         let chatDate=document.createElement('p');
 
+        chatTile.id='message-tile';
+        chatMessage.id='message-tile-text';
+        chatDate.id='message-date';
+
         chatMessage.innerText=currentChat.messages[i].content;
-        chatDate.textContent=currentChat.messages[i].timestamp;
+        chatDate.textContent= new Date( currentChat.messages[i].timestamp).toDateString();
 
         chatTile.append(chatMessage);
         chatTile.append(chatDate);
