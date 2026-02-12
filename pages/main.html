@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Main | LocalChat</title>
+        <link href="../styles/main-page.css" rel="stylesheet"/>
     </head>
     <body>
         <header>
@@ -9,20 +10,23 @@
         </header>
 
         <nav>
-            <div>
-                <H2 id="text-logo">LocalChat</H2>
-                <img id="add-group-icon" src="assets/add.png" alt="add group icon"/>
-                <img id="profile-icon" src="profile-icon.png" alt="profile icon"/>
+            <div id="nav-appbar">
+                <H2 id="text-logo">Local<span>Chat</span></H2>
+                <div>
+                    <img id="add-group-icon" class="icon" src="../assets/images/icons/add.png" alt="add group icon"/>
+                    <img id="profile-icon" class="icon" src="../assets/images/icons/profile.png" alt="profile icon"/>
+                </div>
+                
             </div>
 
             <div>
                 <div id="search-container">
                     <input id="search-text" type="text" placeholder="Search"/>
-                    <img id="search-icon" type="text" alt="search-icon"/>
+                    <img id="search-icon" class="icon" src="../assets/images/icons/search.png" alt="search-icon"/>
                 </div>
             </div>
 
-            <div>
+            <div id="filters-div">
                 <ul id="filter-tags">
                     <li id="filter-tag-all">All</li>
                     <li id="filter-tag-online">Online</li>

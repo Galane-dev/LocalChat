@@ -36,11 +36,11 @@ function populateUsersList(users){
         let userProfilePicture=document.createElement('img');
         let username=document.createElement('h3');
         let lastMessage=document.createElement('p');
-        let onlineBadge=document.createElement('p');
+        let onlineBadge=document.createElement('h4');
         let isGroup=users[i].participants!==undefined;
 
 
-        onlineBadge.textContent='⦿';
+        onlineBadge.textContent='•';
         onlineBadge.style.color='green';
 
         if(users[i].isOnline===true && isGroup===false){
@@ -50,7 +50,7 @@ function populateUsersList(users){
             onlineBadge.style.display='none';
         }
 
-        userProfilePicture.src=users[i].profilePicture||'../assets/images/profile-icon.png';
+        userProfilePicture.src=users[i].profilePicture||'../assets/images/icons/image.png';
         username.textContent=isGroup?users[i].name
                             :users[i].username;
         lastMessage.textContent='Last message placeholder';
@@ -238,7 +238,7 @@ function main(){
     let groups=LocalStorageService.getGroups();
     let currentUser=SessionManager.getUser();
     users=users.filter(user=>user.id!==currentUser.id);
-    groups=groups.filter(group=>group.participants.includes(currentUser.id));
+    groups=groups.filter(group=>group.participants.includes(currentUser.username));
 
 
     window.addEventListener('storage',function(event){
