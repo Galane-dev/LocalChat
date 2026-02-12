@@ -206,6 +206,7 @@ function applyFilters(){
     //This is a nice to have, implement if there's time
 }
 
+
 function updateProfile(){
     let username=document.getElementById('username-input').value;
     let password=document.getElementById('password-input').value;
@@ -223,7 +224,21 @@ function createGroup(){
     
 }
 
+function showUserProfile(){
+    let userProfile=document.getElementById('current-user');
+    let chateeProfile=document.getElementById('chatee');
 
+    userProfile.style.display='inline';
+    chateeProfile.style.display='none';
+}
+
+function showChateeProfile(){
+    let userProfile=document.getElementById('current-user');
+    let chateeProfile=document.getElementById('chatee');
+
+    userProfile.style.display='none';
+    chateeProfile.style.display='inline';
+}
 
 
 function main(){
@@ -238,6 +253,12 @@ function main(){
 
     let addGroup=document.getElementById('add-group-icon');
     addGroup.addEventListener('click',()=>createGroup());
+
+    let userProfile=document.getElementById('profile-icon');
+    userProfile.addEventListener('click',()=>showUserProfile());
+
+    let chateeProfile=document.getElementById('chatee-info');
+    chateeProfile.addEventListener('click',()=>showChateeProfile());
 
     let users=LocalStorageService.getUsers();
     let groups=LocalStorageService.getGroups();
