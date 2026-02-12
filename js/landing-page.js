@@ -21,7 +21,7 @@ function toggleView(){
     if(isSignUp){
         heading.textContent='Hey newbie...';
         toggleQuestion.textContent='Already have an account?';
-        toggleMessage.textContent='LocalChat is a local chat app.\nYour data is stored securely in your own computer, no one but you will be able to access the data.';
+        toggleMessage.innerHTML='LocalChat is a local chat app.<br>Your data is stored securely in your own <br>computer, no one but you will be able to access the data.';
         toggleView.textContent="Sign In";
         submitButton.textContent='Sign Up';
 
@@ -29,7 +29,7 @@ function toggleView(){
     else{
         heading.textContent='Welcome Back...';
         toggleQuestion.textContent='Don’t have an account?';
-        toggleMessage.textContent='LocalChat is a local chat app.\nYour data is stored securely in your own computer, no one but you will be able to access the data.';
+        toggleMessage.innerHTML='LocalChat is a local chat app.<br>Your data is stored securely in your own <br>computer, no one but you will be able to access the data.';
         toggleView.textContent='Sign Up';
         submitButton.textContent='Sign In';
 

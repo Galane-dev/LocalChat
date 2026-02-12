@@ -2,6 +2,7 @@ import Message from "../models/message.js";
 import User from "../models/user.js";
 import Chat from "../models/chat.js";
 import SessionManager from "./session-manager.js";
+import Group from "../models/group.js";
 class LocalStorageService{
     constructor(){
 
@@ -41,15 +42,34 @@ class LocalStorageService{
         }
 
         localStorage.setItem('chats',JSON.stringify(chats));
-
     }
 
-    static createGroup(){
-        
+    static messageGroup(groupId,content,replyTo){
+        let message=new Message(content,replyTo);
+        let groups=LocalStorageService.getGroups();
+        for(let i=0;i<groups.length;i++){
+            if(groups[i].id===groupId){
+                groups[i].messages.push(message);
+                break;
+            }
+        }
+
+        localStorage.setItem('groups',JSON.stringify(groups));
+    }
+
+    static createGroup(name,particpants){
+        let groups=JSON.parse(localStorage.getItem('groups'))||[];
+        let group=new Group(name,particpants);
+        groups.push(group);
+        localStorage.setItem('groups',JSON.stringify(groups));
     }
 
     static getUsers(){
         return JSON.parse(localStorage.getItem('users'))||[];
+    }
+
+    static getGroups(){
+        return JSON.parse(localStorage.getItem('groups'))||[];
     }
 
     static getChats(){
