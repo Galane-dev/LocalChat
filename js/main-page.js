@@ -2,10 +2,15 @@ import LocalStorageService from "./services/local-storage.js";
 import SessionManager from "./services/session-manager.js";
 import Chat from "./models/chat.js";
 
-console.log('Logged in user is '+JSON.parse(sessionStorage.getItem('user')).username);
+
+let currentChatId=null;
+let currentChatUser1=null;
+let currentChatUser2=null;
+let currentChatType='private';
+
+
 
 function populateUsersList(users){
-    //First of most, clear list
     let userList=document.getElementById('users-list');
     let noUsersText=document.getElementById('no-users');
     userList.innerHTML='';
@@ -32,12 +37,13 @@ function populateUsersList(users){
         let username=document.createElement('h3');
         let lastMessage=document.createElement('p');
         let onlineBadge=document.createElement('p');
+        let isGroup=users[i].participants!==undefined;
 
 
         onlineBadge.textContent='⦿';
-        onlineBadge.style.color='red';
+        onlineBadge.style.color='green';
 
-        if(users[i].isOnline===true){
+        if(users[i].isOnline===true && isGroup===false){
             onlineBadge.style.display='inline';
         }
         else{
@@ -45,11 +51,19 @@ function populateUsersList(users){
         }
 
         userProfilePicture.src=users[i].profilePicture||'../assets/images/profile-icon.png';
-        username.textContent=users[i].username;
+        username.textContent=isGroup?users[i].name
+                            :users[i].username;
         lastMessage.textContent='Last message placeholder';
 
         //Attach open chat method to the user tile
-        userTile.addEventListener('click',()=>openChat(currentUserId,users[i].id));
+        userTile.addEventListener('click',()=>{
+            if(isGroup){
+                openChat(users[i].id,null,'group');
+            }
+            else{
+                openChat(currentUserId,users[i].id);
+            }
+        });
 
         //Append tile elements to the tile/list item
         userTile.append(userProfilePicture);
@@ -62,35 +76,81 @@ function populateUsersList(users){
 
         console.warn('Added user: '+users[i].username);
 
-
     }
 }
 
-function openChat(userId1,userId2){
-    let allChats=LocalStorageService.getChats();
-    let chatId=Chat.generateChatId(userId1,userId2);
-    let currentChat=allChats?.find(chat=>chat.id===chatId);
-    let chatee=LocalStorageService.getUser(userId2);
+
+
+function openChat(userId1,userId2,type='private'){
+
     let chatsList=document.getElementById('chats-list');
     let messagesBox=document.getElementById('messages-box');
-    let messagesCount=currentChat?.messages?.length;
     let sendIcon=document.getElementById('message-send');
     let noMessages=document.getElementById('no-messages');
     let chateeName=document.getElementById('chatee-name');
     let chateeStatus=document.getElementById('chatee-status');
+    let chateeSideName=document.getElementById('chatee-side-name');
+    let chateeSideStatus=document.getElementById('chatee-side-status');
+    let chatId;
+    let currentChat;
+    let messagesCount=0;
 
-    chateeName.textContent=chatee.username;
+    chatsList.innerHTML='';
+
+    if(type==='private'){
+
+        let allChats=LocalStorageService.getChats();
+        chatId=Chat.generateChatId(userId1,userId2);
+        currentChat=allChats?.find(chat=>chat.id===chatId);
+
+        let chatee=LocalStorageService.getUser(userId2);
+
+        chateeName.textContent=chatee.username;
+        chateeSideName.textContent=chatee.username;
+
+        if(chatee.isOnline){
+            chateeStatus.textContent='Online';
+            chateeSideStatus.textContent='Online';
+        }
+        else{
+            chateeStatus.textContent='Offline';
+            chateeSideStatus.textContent='Offline';
+        }
+
+        messagesCount=currentChat?.messages?.length || 0;
+    }
+
+    else if(type==='group'){
+        let groups=LocalStorageService.getGroups();
+        currentChat=groups.find(group=>group.id===userId1);
+        chatId=userId1;
+
+        chateeName.textContent=currentChat.name;
+        chateeSideName.textContent=currentChat.name;
+
+        chateeStatus.textContent='Group';
+        chateeSideStatus.textContent='Group';
+
+        messagesCount=currentChat?.messages?.length || 0;
+    }
+
     
+    sendIcon.onclick=()=>{
+        let content=document.getElementById('message-text').value.trim();
+        if(content===''){
+            return;
+        } 
+        if(type==='group'){
+            LocalStorageService.messageGroup(chatId,content,'none');
+        }
+        else{
+            LocalStorageService.sendMessage(chatId,content,'none');
+        }
 
-    //Display online/offline status
-    if(chatee.isOnline){
-        chateeStatus.textContent='Online';
-    }
-    else{
-        chateeStatus.textContent='Offline';
-    }
+        document.getElementById('message-text').value='';
+        openChat(userId1,userId2,type);
+    };
 
-    sendIcon.addEventListener('click',()=>sendMessage(chatId));
 
     if(messagesCount>0){
         noMessages.style.display='none';
@@ -102,38 +162,28 @@ function openChat(userId1,userId2){
     }
 
     for(let i=0;i<messagesCount;i++){
+
         let chatTile=document.createElement('li');
         let chatMessage=document.createElement('p');
         let chatDate=document.createElement('p');
-        
+
         chatMessage.innerText=currentChat.messages[i].content;
         chatDate.textContent=currentChat.messages[i].timestamp;
 
-
-        chatTile.append(chatMessage.textContent);
-        chatTile.append(chatDate.textContent);
+        chatTile.append(chatMessage);
+        chatTile.append(chatDate);
 
         chatsList.appendChild(chatTile);
     }
 
-    
-
+    currentChatId=chatId;
+    currentChatUser1=userId1;
+    currentChatUser2=userId2;
+    currentChatType=type;
 }
 
-function sendMessage(chatId,replyTo='none'){
-    let messageInput=document.getElementById('message-text').value;
-    LocalStorageService.sendMessage(chatId,messageInput,replyTo);
-}
 
-function displayUserProfile(userId){
-    if(userId===SessionManager.getUser().id){
-        //The current user's profile
-    }
-    else{
-        //Show the chatee profile
 
-    }
-}
 
 
 
@@ -158,6 +208,19 @@ function updateProfile(){
 }
 
 
+function createGroup(){
+    let groupPrompt=prompt('Enter group name and member Ids(e.g "Group Name":id1,id2,id3...)');
+    groupPrompt=groupPrompt.split(':');
+    let participants=groupPrompt[1].split(',');
+    let groupName=groupPrompt[0];
+
+   LocalStorageService.createGroup(groupName,participants);
+    
+}
+
+
+
+
 function main(){
     let searchIcon=document.getElementById('search-icon');
     searchIcon.addEventListener('click',()=>searchUsers());
@@ -168,7 +231,27 @@ function main(){
     let logout=document.getElementById('logout');
     logout.addEventListener('click',()=>SessionManager.logout());
 
-    populateUsersList(LocalStorageService.getUsers());
+    let addGroup=document.getElementById('add-group-icon');
+    addGroup.addEventListener('click',()=>createGroup());
+
+    let users=LocalStorageService.getUsers();
+    let groups=LocalStorageService.getGroups();
+    let currentUser=SessionManager.getUser();
+    users=users.filter(user=>user.id!==currentUser.id);
+    groups=groups.filter(group=>group.participants.includes(currentUser.id));
+
+
+    window.addEventListener('storage',function(event){
+        if(event.key==='chats' || event.key==='groups'){
+            if(currentChatId!==null){
+                openChat(currentChatUser1,currentChatUser2,currentChatType);
+            }
+        }
+        populateUsersList([...users,...groups]);
+    });
+
+
+    populateUsersList([...users,...groups]);
 }
 
 main();
