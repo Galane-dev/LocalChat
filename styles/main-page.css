@@ -1,0 +1,408 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+nav{
+    flex:0.9;
+    background-color: #f5f5f5;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+main{
+    flex: 1;
+    height: 100vh;
+}
+
+
+aside{
+    flex:1;
+    height: 100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+#text-logo{
+    font-size: 25px;
+    display: inline;
+}
+
+#text-logo span{
+    color:#ff383c;
+}
+
+img{
+    display: inline;
+}
+
+#nav-appbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    background-color: white;
+    padding: 10px;
+    top: 0;
+    z-index: 2;
+    height: 50px;
+}
+
+.icon{
+    height: 15px;
+    width: 15px;
+    color: grey;
+    margin-right: 5px;
+}
+
+#search-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 6px;
+
+}
+
+#search-container img{
+    justify-content: flex-end;
+    padding: 10px;
+
+}
+
+input{
+    border: none;
+    height: max-content;
+    padding: 10px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+
+#filter-tags{
+    margin-left: 10px;
+}
+
+#filter-tags li{
+    display: inline-flex;
+    align-items: center;
+    background-color: #dedede;
+    border-radius: 6px;
+    height: 15px;
+    color: #757575;
+    text-align: center;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#filter-tag-all{
+    background-color: #2c2c2c;
+    color: rgb(209, 209, 209);
+}
+
+
+
+#users-list li{
+    background-color: #ffffff;
+    margin: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    height: 65px;
+    border-radius: 6px;
+    position: relative;
+}
+
+#users-list li p{
+    color: #636262;
+    display: block;
+    margin-left: 65px;
+    position: absolute;
+    margin-top: 36px;
+    font-size: 15px;
+}
+
+
+#users-list li h3{
+    color: #636262;
+    display: block;
+    margin-left: 65px;
+    position: absolute;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+#users-list li h4{
+    color: green;
+    display: block;
+    margin-left: 40px;
+    position: absolute;
+    margin-top: 30px;
+    font-size: 40px;
+    height: 2px;
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+}
+
+#users-list li img{
+    width: 50px;
+    height: 50px;
+    margin-left: 5px;
+    margin-top: 8px;
+}
+
+
+#chatee-info{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    margin-left: 0px;
+    background-color: white;
+    padding-left: 10px;
+    height: 78px;
+
+}
+
+#messages-box{
+    margin-top: 30px;
+    justify-content: center;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+#message-container{
+    margin-top: auto;
+    justify-content:space-between ;
+    background-color: white;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    align-items: center;
+}
+
+#message-send{
+    height: 30px;
+    width: 30px;
+    margin: 10px;
+}
+
+#no-messages{
+    font-weight: bold;
+    color: #cdcdcd;
+}
+
+#chatee-profile-picture{
+    height: 55px;
+    width: 55px;
+}
+
+#chatee-name{
+    color:#636262;
+    margin-top: 5px;   
+    margin-left: 8px; 
+    position: absolute;
+    margin-top: 7px;
+    margin-left: 70px;
+    font-size: 20px;
+}
+
+#chatee-status{
+    position: absolute;
+    margin-top: 33px;
+    margin-left: 70px;
+    font-size: 13px;
+}
+
+
+#message-tile{
+    background-color: rgb(169, 169, 169);
+    text-align: left;
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right: 20%;
+    padding-left: 10px;
+    padding-top: 10px;
+    list-style-type: none;
+    margin-bottom: 15px;
+}
+
+#message-tile-text{
+    color: white;
+}
+
+#message-date{
+    color:#eeeeee;
+    margin-top: 10px;
+    text-align: end;
+    font-size: 13px;
+    margin-right: 10px;
+    padding-bottom: 10px;
+}
+
+
+#profile-appbar{
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+#chatee{
+    display: flex;
+    display: none;
+}
+
+#chatee-details{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20%;
+}
+
+#chatee-side-status{
+    margin-top: 20px;
+}
+
+#chatee-side-name{
+    margin-top: 30px;
+    font-size: 30px;
+    color: #636262;
+}
+
+#chatee-side-profile-picture{
+    height: 80px;
+    width: 80px;
+}
+
+#current-user{
+    height: 100%;
+}
+
+#current-user-details{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 100%;
+}
+
+#logout{
+    display: inline;
+    width: 100%;
+    background-color: #ff383c;
+    border: 1px solid #cbcbcb;
+    color: white;
+    height:40px;
+    border-radius: 6px;
+    margin-right: 60px;
+}
+
+#save-edits{
+    display: inline;
+    width: 45%;
+    background-color: #2c2c2c;
+    border: 6px solid #2c2c2c;
+    color: white;
+    height:40px;
+    border-radius: 6px;
+    margin-right: 4%;
+
+}
+
+#cancel-edits{
+    display: inline;
+    width: 45%;
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    color: black;
+    margin-bottom: 10px;
+    height:40px;
+    border-radius: 6px;
+    margin-left: 4%;
+}
+
+#user-profile-picture{
+    height: 50px;
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+#username-input{
+    margin-bottom: 20px;
+    border:1px solid #d3d3d3;
+    width: 80%;
+    border-radius: 6px;
+}
+
+#password-input{
+    margin-bottom: 20px;
+    border:1px solid #d3d3d3;
+    width: 80%;
+    border-radius: 6px;
+}
+
+
+#profile-actions{
+    margin-top: auto;
+    justify-content: flex-end;
+    margin-bottom: 100px;
+}
+
+
+#profile-back{
+    display: none;
+}
+
+#add-group-icon{
+    display: inline;
+    font-size: 30px;
+    margin-right: 10px;
+    color: grey;
+    
+}
+
+
+@media (max-width:1000px) {
+    aside{
+        display: none;
+    }
+    
+}
+
+@media (max-width:600px){
+    main{
+        display: none;
+    }
+    nav{
+        flex:1;
+    }
+    #profile-back{
+        display: inline;
+    }
+}

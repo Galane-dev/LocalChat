@@ -35,39 +35,19 @@ LocalChat is a modern local chat app that allows users to create accounts, chat 
  * users are able to see and message groups
  * users are able to recieve and send messages in real time
 
+# Design
+
+## [UI Design](https://www.figma.com/design/97l0hfe6ogeRn0mjbfe4Gy/Untitled?node-id=0-1&m=dev&t=j02J3MH5C7mYCmF1-1)
 
 # running application
 ## FRONTEND
-npm install
+*I nstall Live Server VS Code extension
+* Run index.html with Live Server
 
 ## Development
-npm run dev
+*I nstall Live Server VS Code extension
+* Run index.html with Live Server
 
 ## Production
-* npm run build
-* npm start
+* visit galane-dev.github.io/LocalChat/
 
-## Docker frontend (if you have environement setup)
-
-* npm run docker
-* npm run docker-start
-
-docker currently running in detach mode so you will need to add the following under environment variables
-
-* ENV NEXT_PUBLIC_API_BASE_URI ACTUAL_BASE_URL
-
-# BACKEND
-
-Visual Studio
-* select web.host as startup project
-* build application
-* run application under IIS Express
-
-# FRONTEND-CI
-
-* npm run ci
-
-# Setup for husky
-In the client directory run the following command
-* npm run prepare
-  
