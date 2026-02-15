@@ -121,9 +121,57 @@ const setupEventListeners = () => {
     document.getElementById('chatee-info').addEventListener('click', showChateeProfile);
     document.getElementById('cancel-edits').addEventListener('click', cancelEdits);
     document.getElementById('profile-back').addEventListener('click', () => switchMobileView('nav'));
+    document.getElementById('filter-tag-all').addEventListener('click',()=>loadInitialData());
+    document.getElementById('filter-tag-online').addEventListener('click',()=>showOnlineUsers());
+    document.getElementById('filter-tag-groups').addEventListener('click',()=>showGroups());
 };
 
+const showOnlineUsers=()=>{
+    changeFilterTagColor('online');
+    let users=LocalStorageService.getUsers();
+    const currentUser=SessionManager.getUser();
+    
+    users=users.filter(user=>user.id !== currentUser.id);
+    
+    let onlineUsers=users.filter(user=>user.isOnline===true);
+
+    users=onlineUsers;
+
+    populateUsersList(users);
+}
+
+const changeFilterTagColor=(filter)=>{
+    if(filter==='group'){
+        document.getElementById('filter-tag-groups').style.backgroundColor="#2c2c2c";
+        document.getElementById('filter-tag-online').style.backgroundColor="#dedede";
+        document.getElementById('filter-tag-all').style.backgroundColor="#dedede";
+    }
+    else if(filter==='online'){
+        document.getElementById('filter-tag-groups').style.backgroundColor="#dedede";
+        document.getElementById('filter-tag-online').style.backgroundColor="#2c2c2c";
+        document.getElementById('filter-tag-all').style.backgroundColor="#dedede";
+    }
+    else{
+        document.getElementById('filter-tag-groups').style.backgroundColor="#dedede";
+        document.getElementById('filter-tag-online').style.backgroundColor="#dedede";
+        document.getElementById('filter-tag-all').style.backgroundColor="#2c2c2c";
+    }
+}
+
+const showGroups=()=>{
+    changeFilterTagColor('group');
+    const groups=LocalStorageService.getGroups();
+    const currentUser=SessionManager.getUser();
+    const myGroups=groups.filter(group=>group.participants.includes(currentUser.username));
+    console.log('this hit!');
+    console.warn(myGroups);
+
+    populateUsersList(myGroups);
+}
+
+
 const loadInitialData = () => {
+    changeFilterTagColor('all');
     let users=LocalStorageService.getUsers();
     const groups=LocalStorageService.getGroups();
     const currentUser=SessionManager.getUser();
@@ -133,6 +181,8 @@ const loadInitialData = () => {
     
     let onlineUsers=users.filter(user=>user.isOnline===true);
     let offlineUsers=users.filter(user=>user.isOnline===false);
+
+    document.getElementById('username-input').value=currentUser.username;
 
     users=[...onlineUsers,...myGroups,...offlineUsers];
 

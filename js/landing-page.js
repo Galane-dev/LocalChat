@@ -25,7 +25,7 @@ const toggleView=()=>{
         toggleQuestion.textContent='Don’t have an account?';
         toggleMessage.innerHTML='LocalChat is a local chat app.<br>Your data is stored securely in your own <br>computer, no one but you will be able to access the data.';
         toggleView.textContent='Sign Up';
-
+        submitButton.textContent='Sign In';
     }
     isSignUp=!isSignUp;
 }
